@@ -1,0 +1,27 @@
+<div class="filters">
+  <input type="text" placeholder="Title" class="search-input" [(ngModel)]="filters.title.value">
+  <input type="text" placeholder="Publisher" class="search-input" [(ngModel)]="filters.publisher.value">
+  <input type="text" placeholder="Developer" class="search-input" [(ngModel)]="filters.developer.value">
+  <input type="text" placeholder="Release date from" class="search-input" [(ngModel)]="filters.releaseDateFrom.value">
+  <input type="text" placeholder="Release date to" class="search-input" [(ngModel)]="filters.releaseDateTo.value">
+  <input type="text" placeholder="Price from" class="search-input" [(ngModel)]="filters.priceFrom.value">
+  <input type="text" placeholder="Price to" class="search-input" [(ngModel)]="filters.priceTo.value">
+  <input type="text" placeholder="Score from" class="search-input" [(ngModel)]="filters.scoreFrom.value">
+  <input type="text" placeholder="Score to" class="search-input" [(ngModel)]="filters.scoreTo.value">
+  <button class="search-button" (click)="search()">Search</button>
+</div>
+
+<ul class="game-list">
+  <li class="game" *ngFor="let game of games">
+    <div class="game-image">
+      <img src="{{game.thumbnail}}" alt="{{game.title}}">
+    </div>
+    <div class="game-details">
+      <h3 class="game-title">{{game.title}}</h3>
+      <p>{{game.summary}}</p>
+      <p>Price: {{game.price}}</p>
+      <p>Rating: {{game.rating}}</p>
+      <p>Genres: {{game.genres.join(", ")}}</p>
+    </div>
+  </li>
+</ul>

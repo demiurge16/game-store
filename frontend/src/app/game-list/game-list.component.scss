@@ -1,0 +1,35 @@
+.game-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 1em;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em;
+  margin: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+}
+
+.game-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.5em;
+  margin: 0.5em;
+
+  p {
+    font-size: 1em;
+    font-weight: bold;
+  }
+}
+
+.game-title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
