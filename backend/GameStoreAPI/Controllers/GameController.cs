@@ -1,5 +1,8 @@
 ﻿using GameStoreAPI.Dto;
+using GameStoreAPI.Services;
+using GameStoreAPI.WebInterface;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace GameStoreAPI.Controllers
 {
@@ -7,10 +10,18 @@ namespace GameStoreAPI.Controllers
     [ApiController]
     public class GameController : Controller
     {
-        [HttpGet]
-        public IActionResult Get()
+        private readonly IGameService _gameService;
+
+        public GameController(IGameService gameService)
         {
-            return Ok();
+            _gameService = gameService;
+        }
+
+        [HttpGet]
+        public IActionResult Get([FromQuery] GameListQueryWebInterface query)
+        {
+            var result = _gameService.GetGames(query.ToQuery());
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

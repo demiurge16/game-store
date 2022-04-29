@@ -1,6 +1,6 @@
 ﻿using GameStoreAPI.Contexts;
 using GameStoreAPI.Models;
-
+using GameStoreAPI.Queries;
 using Microsoft.EntityFrameworkCore;
 
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace GameStoreAPI.Repositories
 {
     public interface IGameRepository
     {
-        Task<IEnumerable<Game>> GetAllAsync();
+        Task<IEnumerable<Game>> GetAllAsync(GameListQuery query);
         Task<Game> GetByIdAsync(int id);
         Task<Game> CreateAsync(Game game);
         Task<Game> UpdateAsync(Game game);
@@ -26,9 +26,9 @@ namespace GameStoreAPI.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Game>> GetAllAsync()
+        public async Task<IEnumerable<Game>> GetAllAsync(GameListQuery query)
         {
-            return await _context.Games.ToListAsync();
+            return await _context.Games.UseQuery(query).ToListAsync();
         }
 
         public async Task<Game> GetByIdAsync(int id)

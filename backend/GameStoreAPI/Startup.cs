@@ -1,3 +1,6 @@
+using GameStoreAPI.Contexts;
+using GameStoreAPI.Repositories;
+using GameStoreAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +29,10 @@ namespace GameStoreAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<GameStoreContext>();
+            services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IUnitOfWork, GameStoreUnitOfWork>();
+            services.AddScoped<IGameService, GameService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

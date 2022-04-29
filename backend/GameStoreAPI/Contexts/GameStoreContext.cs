@@ -37,5 +37,10 @@ namespace GameStoreAPI.Contexts
             modelBuilder.Entity<Game>().HasMany(g => g.Reviews).WithOne(g => g.Game);
             modelBuilder.Entity<OrderItem>().HasOne(oi => oi.Order).WithMany(o => o.OrderItems).HasForeignKey(oi => oi.OrderId);
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Host=26.34.26.212;Database=game-store;Username=postgres;Password=1qaz@WSX");
+        }
     }
 }
