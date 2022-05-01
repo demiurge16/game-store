@@ -144,12 +144,12 @@ namespace GameStoreAPI.Queries
 
             if (query.ReleaseDateFrom != null)
             {
-                games = games.Where(g => g.ReleaseDate >= query.ReleaseDateFrom);
+                games = games.Where(g => g.ReleaseDate >= DateTime.SpecifyKind(query.ReleaseDateFrom.Value, DateTimeKind.Utc));
             }
 
             if (query.ReleaseDateTo != null)
             {
-                games = games.Where(g => g.ReleaseDate <= query.ReleaseDateTo);
+                games = games.Where(g => g.ReleaseDate <= DateTime.SpecifyKind(query.ReleaseDateTo.Value, DateTimeKind.Utc));
             }
 
             if (query.ScoreFrom != null)
@@ -174,7 +174,7 @@ namespace GameStoreAPI.Queries
 
             if (query.PlatformId != null)
             {
-                games = games.Where(g => g.PlatformId == query.PlatformId);
+                games = games.Where(g => g.Platforms.Any(p => p.Id == query.PlatformId));
             }
 
             if (query.PublisherId != null)

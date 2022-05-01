@@ -3,6 +3,7 @@ using GameStoreAPI.Services;
 using GameStoreAPI.WebInterface;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace GameStoreAPI.Controllers
 {
@@ -20,7 +21,10 @@ namespace GameStoreAPI.Controllers
         [HttpGet]
         public IActionResult Get([FromQuery] GameListQueryWebInterface query)
         {
-            var result = _gameService.GetGames(query.ToQuery());
+            var result = _gameService.GetGames(query.ToQuery())
+                .Select(e => e.ToView())
+                .ToList();
+            
             return Ok(result);
         }
 

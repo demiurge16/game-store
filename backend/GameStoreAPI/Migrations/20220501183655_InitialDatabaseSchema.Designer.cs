@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameStoreAPI.Migrations
 {
     [DbContext(typeof(GameStoreContext))]
-    [Migration("20220429223717_InitialSchema")]
-    partial class InitialSchema
+    [Migration("20220501183655_InitialDatabaseSchema")]
+    partial class InitialDatabaseSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,21 @@ namespace GameStoreAPI.Migrations
                     b.ToTable("GameGenre");
                 });
 
+            modelBuilder.Entity("GamePlatform", b =>
+                {
+                    b.Property<long>("GamesId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PlatformsId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("GamesId", "PlatformsId");
+
+                    b.HasIndex("PlatformsId");
+
+                    b.ToTable("GamePlatform");
+                });
+
             modelBuilder.Entity("GameStoreAPI.Models.Developer", b =>
                 {
                     b.Property<long>("Id")
@@ -52,7 +67,7 @@ namespace GameStoreAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Developer");
+                    b.ToTable("Developers", (string)null);
                 });
 
             modelBuilder.Entity("GameStoreAPI.Models.Game", b =>
@@ -67,9 +82,6 @@ namespace GameStoreAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<long>("DeveloperId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PlatformId")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
@@ -90,17 +102,12 @@ namespace GameStoreAPI.Migrations
                     b.Property<string>("Summary")
                         .HasColumnType("text");
 
-                    b.Property<string>("Thumbnail")
-                        .HasColumnType("text");
-
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DeveloperId");
-
-                    b.HasIndex("PlatformId");
 
                     b.HasIndex("PublisherId");
 
@@ -298,17 +305,26 @@ namespace GameStoreAPI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("GamePlatform", b =>
+                {
+                    b.HasOne("GameStoreAPI.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GamesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GameStoreAPI.Models.Platform", null)
+                        .WithMany()
+                        .HasForeignKey("PlatformsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("GameStoreAPI.Models.Game", b =>
                 {
                     b.HasOne("GameStoreAPI.Models.Developer", "Developer")
                         .WithMany("Games")
                         .HasForeignKey("DeveloperId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GameStoreAPI.Models.Platform", "Platform")
-                        .WithMany("Games")
-                        .HasForeignKey("PlatformId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -319,8 +335,6 @@ namespace GameStoreAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Developer");
-
-                    b.Navigation("Platform");
 
                     b.Navigation("Publisher");
                 });
@@ -381,11 +395,6 @@ namespace GameStoreAPI.Migrations
             modelBuilder.Entity("GameStoreAPI.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("GameStoreAPI.Models.Platform", b =>
-                {
-                    b.Navigation("Games");
                 });
 
             modelBuilder.Entity("GameStoreAPI.Models.Publisher", b =>

@@ -6,12 +6,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace GameStoreAPI.Migrations
 {
-    public partial class InitialSchema : Migration
+    public partial class InitialDatabaseSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Developer",
+                name: "Developers",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -20,7 +20,7 @@ namespace GameStoreAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Developer", x => x.Id);
+                    table.PrimaryKey("PK_Developers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,14 +91,12 @@ namespace GameStoreAPI.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: true),
-                    Thumbnail = table.Column<string>(type: "text", nullable: true),
                     Summary = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Rating = table.Column<string>(type: "text", nullable: true),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     Score = table.Column<decimal>(type: "numeric", nullable: false),
-                    PlatformId = table.Column<long>(type: "bigint", nullable: false),
                     PublisherId = table.Column<long>(type: "bigint", nullable: false),
                     DeveloperId = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -106,15 +104,9 @@ namespace GameStoreAPI.Migrations
                 {
                     table.PrimaryKey("PK_Games", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Games_Developer_DeveloperId",
+                        name: "FK_Games_Developers_DeveloperId",
                         column: x => x.DeveloperId,
-                        principalTable: "Developer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Games_Platforms_PlatformId",
-                        column: x => x.PlatformId,
-                        principalTable: "Platforms",
+                        principalTable: "Developers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -165,6 +157,30 @@ namespace GameStoreAPI.Migrations
                         name: "FK_GameGenre_Genres_GenresId",
                         column: x => x.GenresId,
                         principalTable: "Genres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GamePlatform",
+                columns: table => new
+                {
+                    GamesId = table.Column<long>(type: "bigint", nullable: false),
+                    PlatformsId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GamePlatform", x => new { x.GamesId, x.PlatformsId });
+                    table.ForeignKey(
+                        name: "FK_GamePlatform_Games_GamesId",
+                        column: x => x.GamesId,
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GamePlatform_Platforms_PlatformsId",
+                        column: x => x.PlatformsId,
+                        principalTable: "Platforms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -230,14 +246,14 @@ namespace GameStoreAPI.Migrations
                 column: "GenresId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GamePlatform_PlatformsId",
+                table: "GamePlatform",
+                column: "PlatformsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Games_DeveloperId",
                 table: "Games",
                 column: "DeveloperId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Games_PlatformId",
-                table: "Games",
-                column: "PlatformId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Games_PublisherId",
@@ -276,6 +292,9 @@ namespace GameStoreAPI.Migrations
                 name: "GameGenre");
 
             migrationBuilder.DropTable(
+                name: "GamePlatform");
+
+            migrationBuilder.DropTable(
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
@@ -283,6 +302,9 @@ namespace GameStoreAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "Platforms");
 
             migrationBuilder.DropTable(
                 name: "Orders");
@@ -294,10 +316,7 @@ namespace GameStoreAPI.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Developer");
-
-            migrationBuilder.DropTable(
-                name: "Platforms");
+                name: "Developers");
 
             migrationBuilder.DropTable(
                 name: "Publishers");

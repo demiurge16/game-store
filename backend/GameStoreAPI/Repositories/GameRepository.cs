@@ -28,7 +28,13 @@ namespace GameStoreAPI.Repositories
 
         public async Task<IEnumerable<Game>> GetAllAsync(GameListQuery query)
         {
-            return await _context.Games.UseQuery(query).ToListAsync();
+            return await _context.Games
+                .Include(e => e.Publisher)
+                .Include(e => e.Developer)
+                .Include(e => e.Platforms)
+                .Include(e => e.Genres)
+                .Include(e => e.Reviews)
+                .UseQuery(query).ToListAsync();
         }
 
         public async Task<Game> GetByIdAsync(int id)

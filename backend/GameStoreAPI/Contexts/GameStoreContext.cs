@@ -25,15 +25,17 @@ namespace GameStoreAPI.Contexts
             modelBuilder.Entity<Game>().ToTable("Games");
             modelBuilder.Entity<Genre>().ToTable("Genres");
             modelBuilder.Entity<Platform>().ToTable("Platforms");
+            modelBuilder.Entity<Developer>().ToTable("Developers");
             modelBuilder.Entity<Publisher>().ToTable("Publishers");
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Order>().ToTable("Orders");
             modelBuilder.Entity<OrderItem>().ToTable("OrderItems");
             modelBuilder.Entity<Review>().ToTable("Reviews");
 
-            modelBuilder.Entity<Game>().HasMany(g => g.Genres).WithMany(g => g.Games);
-            modelBuilder.Entity<Game>().HasOne(g => g.Platform).WithMany(g => g.Games).HasForeignKey(g => g.PlatformId);
+            modelBuilder.Entity<Game>().HasOne(g => g.Developer).WithMany(g => g.Games).HasForeignKey(g => g.DeveloperId);
             modelBuilder.Entity<Game>().HasOne(g => g.Publisher).WithMany(g => g.Games).HasForeignKey(g => g.PublisherId);
+            modelBuilder.Entity<Game>().HasMany(g => g.Genres).WithMany(g => g.Games);
+            modelBuilder.Entity<Game>().HasMany(g => g.Platforms).WithMany(g => g.Games);
             modelBuilder.Entity<Game>().HasMany(g => g.Reviews).WithOne(g => g.Game);
             modelBuilder.Entity<OrderItem>().HasOne(oi => oi.Order).WithMany(o => o.OrderItems).HasForeignKey(oi => oi.OrderId);
         }
