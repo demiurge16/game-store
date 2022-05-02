@@ -1,28 +1,27 @@
 ﻿using GameStoreAPI.Dto;
 using GameStoreAPI.Services;
-using GameStoreAPI.WebInterface;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace GameStoreAPI.Controllers
 {
-    [Route("api/v1/games")]
+    [Route("api/v1/genres")]
     [ApiController]
-    public class GameController : Controller
+    public class GenreController : Controller
     {
-        private readonly IGameService _gameService;
+        private readonly IGenreService _genreService;
 
-        public GameController(IGameService gameService)
+        public GenreController(IGenreService genreService)
         {
-            _gameService = gameService;
+            _genreService = genreService;
         }
 
         [HttpGet]
-        public IList<GameViewDto> Get([FromQuery] GameListQueryWebInterface query)
+        public IList<GenreViewDto> Get()
         {
-            IList<GameViewDto> result =  _gameService.GetGames(query.ToQuery())
-                .Select(e => e.ToView())
+            IList<GenreViewDto> result = _genreService.GetAll()
+                .Select(g => g.ToView())
                 .ToList();
 
             return result;
@@ -35,13 +34,13 @@ namespace GameStoreAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] GameCreateDto game)
+        public IActionResult Post([FromBody] CreateGenreDto genre)
         {
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] GameUpdateDto game)
+        public IActionResult Put(int id, [FromBody] UpdateGenreDto genre)
         {
             return Ok();
         }

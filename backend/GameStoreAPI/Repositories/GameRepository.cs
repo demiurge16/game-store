@@ -2,7 +2,6 @@
 using GameStoreAPI.Models;
 using GameStoreAPI.Queries;
 using Microsoft.EntityFrameworkCore;
-
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

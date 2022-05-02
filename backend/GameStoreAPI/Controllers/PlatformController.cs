@@ -1,28 +1,27 @@
 ﻿using GameStoreAPI.Dto;
 using GameStoreAPI.Services;
-using GameStoreAPI.WebInterface;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace GameStoreAPI.Controllers
 {
-    [Route("api/v1/games")]
+    [Route("api/v1/platforms")]
     [ApiController]
-    public class GameController : Controller
+    public class PlatformController : Controller
     {
-        private readonly IGameService _gameService;
+        private readonly IPlatformService _platformService;
 
-        public GameController(IGameService gameService)
+        public PlatformController(IPlatformService platformService)
         {
-            _gameService = gameService;
+            _platformService = platformService;
         }
 
         [HttpGet]
-        public IList<GameViewDto> Get([FromQuery] GameListQueryWebInterface query)
+        public IList<PlatformViewDto> Get()
         {
-            IList<GameViewDto> result =  _gameService.GetGames(query.ToQuery())
-                .Select(e => e.ToView())
+            IList<PlatformViewDto> result = _platformService.GetAll()
+                .Select(p => p.ToView())
                 .ToList();
 
             return result;
@@ -35,13 +34,13 @@ namespace GameStoreAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] GameCreateDto game)
+        public IActionResult Post([FromBody] CreatePlatformDto platform)
         {
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] GameUpdateDto game)
+        public IActionResult Put(int id, [FromBody] UpdatePlatformDto platform)
         {
             return Ok();
         }

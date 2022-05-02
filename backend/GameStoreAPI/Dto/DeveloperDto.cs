@@ -8,6 +8,16 @@ namespace GameStoreAPI.Dto
         public string Name { get; set; }
     }
 
+    public class CreateDeveloperDto
+    {
+        public string Name { get; set; }
+    }
+
+    public class UpdateDeveloperDto
+    {
+        public string Name { get; set; }
+    }
+
     public static class DeveloperExtensions
     {
         public static DeveloperViewDto ToView(this Developer developer)

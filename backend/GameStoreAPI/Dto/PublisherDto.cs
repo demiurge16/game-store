@@ -8,6 +8,16 @@ namespace GameStoreAPI.Dto
         public string Name { get; set; }
     }
 
+    public class CreatePublisherDto
+    {
+        public string Name { get; set; }
+    }
+
+    public class UpdatePublisherDto
+    {
+        public string Name { get; set; }
+    }
+
     public static class PublisherExtensions
     {
         public static PublisherViewDto ToView(this Publisher publisher)

@@ -4,16 +4,22 @@ import { GameListComponent } from './game-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PlatformsPipe } from './platforms.pipe';
+import { GenresPipe } from './genres.pipe';
 
 @NgModule({
   declarations: [
-    GameListComponent
+    GameListComponent,
+    PlatformsPipe,
+    GenresPipe
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   exports: [
     GameListComponent

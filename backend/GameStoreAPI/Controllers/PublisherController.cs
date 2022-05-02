@@ -1,28 +1,27 @@
 ﻿using GameStoreAPI.Dto;
 using GameStoreAPI.Services;
-using GameStoreAPI.WebInterface;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace GameStoreAPI.Controllers
 {
-    [Route("api/v1/games")]
+    [Route("api/v1/publishers")]
     [ApiController]
-    public class GameController : Controller
+    public class PublisherController : Controller
     {
-        private readonly IGameService _gameService;
+        private readonly IPublisherService _publisherService;
 
-        public GameController(IGameService gameService)
+        public PublisherController(IPublisherService publisherService)
         {
-            _gameService = gameService;
+            _publisherService = publisherService;
         }
 
         [HttpGet]
-        public IList<GameViewDto> Get([FromQuery] GameListQueryWebInterface query)
+        public IList<PublisherViewDto> Get()
         {
-            IList<GameViewDto> result =  _gameService.GetGames(query.ToQuery())
-                .Select(e => e.ToView())
+            IList<PublisherViewDto> result = _publisherService.GetAll()
+                .Select(p => p.ToView())
                 .ToList();
 
             return result;
@@ -35,13 +34,13 @@ namespace GameStoreAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] GameCreateDto game)
+        public IActionResult Post([FromBody] CreatePublisherDto publisher)
         {
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] GameUpdateDto game)
+        public IActionResult Put(int id, [FromBody] UpdatePublisherDto publisher)
         {
             return Ok();
         }

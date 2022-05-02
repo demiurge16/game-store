@@ -1,27 +1,99 @@
-<div class="filters">
-  <input type="text" placeholder="Title" class="search-input" [(ngModel)]="filters.title.value">
-  <input type="text" placeholder="Publisher" class="search-input" [(ngModel)]="filters.publisher.value">
-  <input type="text" placeholder="Developer" class="search-input" [(ngModel)]="filters.developer.value">
-  <input type="text" placeholder="Release date from" class="search-input" [(ngModel)]="filters.releaseDateFrom.value">
-  <input type="text" placeholder="Release date to" class="search-input" [(ngModel)]="filters.releaseDateTo.value">
-  <input type="text" placeholder="Price from" class="search-input" [(ngModel)]="filters.priceFrom.value">
-  <input type="text" placeholder="Price to" class="search-input" [(ngModel)]="filters.priceTo.value">
-  <input type="text" placeholder="Score from" class="search-input" [(ngModel)]="filters.scoreFrom.value">
-  <input type="text" placeholder="Score to" class="search-input" [(ngModel)]="filters.scoreTo.value">
-  <button class="search-button" (click)="search()">Search</button>
+<div class="d-flex flex-wrap filters">
+  <div class="m-1 p-1">
+    <select class="form-select" aria-label="Sort direction" [(ngModel)]="query.sortDirection">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+  </div>
+  <div class="m-1 p-1" aria-label="Sort by">
+    <select class="form-select" [(ngModel)]="query.sortField">
+      <option value="title">Title</option>
+      <option value="releaseDate">Release Date</option>
+      <option value="score">Score</option>
+      <option value="price">Price</option>
+    </select>
+  </div>
+  <div class="m-1 p-1">
+    <input type="text" placeholder="Title like" class="form-control" [(ngModel)]="query.titleLike">
+  </div>
+  <div class="m-1 p-1 d-flex">
+    <input placeholder="Release date from" class="form-control" [(ngModel)]="query.releaseDateFrom" ngbDatepicker #releaseDateFrom="ngbDatepicker">
+    <button class="btn btn-outline-secondary fa fa-calendar" (click)="releaseDateFrom.toggle()" type="button"></button>
+  </div>
+  <div class="m-1 p-1 d-flex">
+    <input placeholder="Release date to" class="form-control" [(ngModel)]="query.releaseDateTo" ngbDatepicker #releaseDateTo="ngbDatepicker">
+    <button class="btn btn-outline-secondary fa fa-calendar" (click)="releaseDateTo.toggle()" type="button"></button>
+  </div>
+  <div class="m-1 p-1">
+    <input type="number" placeholder="Score from" class="form-control" [(ngModel)]="query.scoreFrom">
+  </div>
+  <div class="m-1 p-1">
+    <input type="number" placeholder="Score to" class="form-control" [(ngModel)]="query.scoreTo">
+  </div>
+  <div class="m-1 p-1">
+    <input type="number" placeholder="Price from" class="form-control" [(ngModel)]="query.priceFrom">
+  </div>
+  <div class="m-1 p-1">
+    <input type="number" placeholder="Price to" class="form-control" [(ngModel)]="query.priceTo">
+  </div>
+  <div class="m-1 p-1">
+    <select class="form-select" aria-label="Platform" [(ngModel)]="query.platformId">
+      <option value="null">All platforms</option>
+      <option *ngFor="let platform of platforms" [value]="platform.id">{{platform.name}}</option>
+    </select>
+  </div>
+  <div aria-label="Publisher" class="m-1 p-1">
+    <select class="form-select" [(ngModel)]="query.publisherId">
+      <option value="null">All publishers</option>
+      <option *ngFor="let publisher of publishers" [value]="publisher.id">{{publisher.name}}</option>
+    </select>
+  </div>
+  <div aria-label="Developer" class="m-1 p-1">
+    <select class="form-select" [(ngModel)]="query.developerId">
+      <option value="null">All developers</option>
+      <option *ngFor="let developer of developers" [value]="developer.id">{{developer.name}}</option>
+    </select>
+  </div>
+  <div aria-label="Genre" class="m-1 p-1">
+    <select class="form-select" [(ngModel)]="query.genreId">
+      <option value="null">All genres</option>
+      <option *ngFor="let genre of genres" [value]="genre.id">{{genre.name}}</option>
+    </select>
+  </div>
+  <div class="m-1 p-1">
+    <button class="btn btn-outline-primary" (click)="search()">Search</button>
+  </div>
 </div>
 
 <ul class="game-list">
   <li class="game" *ngFor="let game of games">
-    <div class="game-image">
-      <img src="{{game.thumbnail}}" alt="{{game.title}}">
-    </div>
     <div class="game-details">
-      <h3 class="game-title">{{game.title}}</h3>
-      <p>{{game.summary}}</p>
-      <p>Price: {{game.price}}</p>
-      <p>Rating: {{game.rating}}</p>
-      <p>Genres: {{game.genres.join(", ")}}</p>
+      <div class="container">
+        <div class="row">
+          <h3 class="game-title">{{game.title}}</h3>
+        </div>
+        <div class="row">
+          <p>{{game.summary}}</p>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>Publisher: {{game.publisher.name}}</p>
+            <p>Developer: {{game.developer.name}}</p>
+          </div>
+          <div class="col">
+            <p>Release date: {{game.releaseDate | date}}</p>
+            <p>Rating: {{game.rating}}</p>
+          </div>
+          <div class="col">
+            <p>Platforms: {{game.platforms | platforms}}</p>
+            <p>Genres: {{game.genres | genres}}</p>
+          </div>
+          <div class="col">
+            <p>Score: {{game.score}}</p>
+            <p>Price: {{game.price | currency}}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </li>
 </ul>

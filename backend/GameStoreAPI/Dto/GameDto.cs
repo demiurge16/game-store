@@ -18,9 +18,7 @@ namespace GameStoreAPI.Dto
         public decimal Score { get; set; }
 
         public PublisherViewDto Publisher { get; set; }
-        public long PublisherId { get; set; }
         public DeveloperViewDto Developer { get; set; }
-        public long DeveloperId { get; set; }
 
         public IList<PlatformViewDto> Platforms { get; set; }
         public IList<GenreViewDto> Genres { get; set; }

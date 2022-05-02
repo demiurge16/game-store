@@ -11,8 +11,8 @@ namespace GameStoreAPI.Services
     {
         IEnumerable<Game> GetGames(GameListQuery gameListQuery);
         Game GetById(int id);
-        void Create(Game game);
-        void Update(Game game);
+        Game Create(Game game);
+        Game Update(Game game);
         void Delete(int id);
     }
 
@@ -37,16 +37,18 @@ namespace GameStoreAPI.Services
             return _gameRepository.GetAllAsync(query).Result;
         }
 
-        public void Create(Game game)
+        public Game Create(Game game)
         {
-            _gameRepository.CreateAsync(game).Wait();
+            _gameRepository.CreateAsync(game);
             _unitOfWork.Commit();
+            return game;
         }
 
-        public void Update(Game game)
+        public Game Update(Game game)
         {
-            _gameRepository.UpdateAsync(game).Wait();
+            _gameRepository.UpdateAsync(game);
             _unitOfWork.Commit();
+            return game;
         }
 
         public void Delete(int id)
